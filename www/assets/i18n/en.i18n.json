@@ -1,0 +1,38 @@
+{
+    "action": {
+        "common": {
+            "cancel": "Cancel",
+            "send": "Send",
+            "okay": "Ok"
+        },
+        "main": {
+            "setup": "Setup",
+            "join": "Join",
+            "changeToSetup": "Dont have a room? Setup a new one!",
+            "changeToJoin": "Already have a room? Join!"
+        }
+    },
+    "message": {
+        "common": {
+            "cannotBeNull": "{{field}} must be filled",
+            "minCharacter": "{{field}} must be at least {{length}} character long",
+            "maxCharacter": "{{field}} cannot exceed {{length}} character",
+            "mustBeAlphaNumeric": "{{field}} must be alphanumeric cannot contain special characters",
+            "notFound": "We did not find any room with given credentinals",
+            "unexpected": "Unexpected internal error. Try again later."
+        },
+        "main": {
+            "join": "Join a room",
+            "setup": "Setup a new room"
+        }
+    },
+    "title": {
+        "common": {
+            "error": "An error occured"
+        },
+        "main": {
+            "roomCode": "Room Code",
+            "password": "Password"
+        }
+    }
+}

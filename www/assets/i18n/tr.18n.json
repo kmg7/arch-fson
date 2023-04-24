@@ -1,0 +1,13 @@
+{
+    "action": {
+        "common": {
+            "cancel": "İptal",
+            "send": "Yolla",
+            "okay": "Tamam"
+        },
+        "auth": {
+            "login": "Giriş Yap",
+            "register": "Kayıt Ol"
+        }
+    }
+}
