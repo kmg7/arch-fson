@@ -1,0 +1,57 @@
+{
+    "action": {
+        "common": {
+            "cancel": "İptal",
+            "send": "Gönder",
+            "okay": "Tamam",
+            "logOut": "Çıkış Yap"
+        },
+        "auth": {
+            "setup": "Kur",
+            "join": "Katıl",
+            "changeToSetup": "Henüz bir odan yokmu? Hemen bir tane kur!",
+            "changeToJoin": "Zaten bir odan varmı? Katıl!"
+        },
+        "room": {
+            "download": "İndir",
+            "upload": "Yükle"
+        }
+    },
+    "message": {
+        "common": {
+            "cannotBeNull": "{{field}} doldurulmalıdır",
+            "minCharacter": "{{field}} en az {{length}} karakter uzunluğunda olmalı",
+            "maxCharacter": "{{field}} {{length}} karakter uzunluğunu geçemez",
+            "mustBeAlphaNumeric": "{{field}} sayı ve harflerden oluşmalıdır özel karakter içeremez",
+            "notFound": "Verilen bilgiler ile eşleşen bir oda bulamadık",
+            "unexpected": "Beklenmedik sunucu hatası. Lütfen daha sonra deneyin."
+        },
+        "auth": {
+            "join": "Bir odaya katıl",
+            "setup": "Yeni bir oda kur"
+        },
+        "room": {
+            "hostNotProvidedAnyFile": "Oda sahibi henüz dosya paylaşımında bulunmadı",
+            "hostNotOnline": "Oda sahibi aktif değil",
+            "upload": "Dosyaları oda sahibine yüklemek için sürükle bırak yada seç"
+        }
+    },
+    "title": {
+        "common": {
+            "fson": "fson Ağ Üzerinden Dosya Paylaşımı",
+            "error": "Bir hata meydana geldi",
+            "room": "Oda",
+            "downloads": "İndirmeler",
+            "settings": "Ayarlar",
+            "language": {
+                "change": "Dili değiştir",
+                "english": "English",
+                "turkish": "Türkçe"
+            }
+        },
+        "auth": {
+            "roomCode": "Oda Kodu",
+            "password": "Şifre"
+        }
+    }
+}

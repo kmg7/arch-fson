@@ -3,13 +3,18 @@
         "common": {
             "cancel": "Cancel",
             "send": "Send",
-            "okay": "Ok"
+            "okay": "Ok",
+            "logOut": "Log Out"
         },
-        "main": {
+        "auth": {
             "setup": "Setup",
             "join": "Join",
             "changeToSetup": "Dont have a room? Setup a new one!",
             "changeToJoin": "Already have a room? Join!"
+        },
+        "room": {
+            "download": "Download",
+            "upload": "Upload"
         }
     },
     "message": {
@@ -21,16 +26,30 @@
             "notFound": "We did not find any room with given credentinals",
             "unexpected": "Unexpected internal error. Try again later."
         },
-        "main": {
+        "auth": {
             "join": "Join a room",
             "setup": "Setup a new room"
+        },
+        "room": {
+            "hostNotProvidedAnyFile": "Host not provided any file yet",
+            "hostNotOnline": "Host offline",
+            "upload": "To upload files to host drag and drop or select"
         }
     },
     "title": {
         "common": {
-            "error": "An error occured"
+            "fson": "fson File Share Over Network",
+            "error": "An error occured",
+            "room": "Room",
+            "downloads": "Downloads",
+            "settings": "Settings",
+            "language": {
+                "change": "Change Language",
+                "english": "English",
+                "turkish": "Türkçe"
+            }
         },
-        "main": {
+        "auth": {
             "roomCode": "Room Code",
             "password": "Password"
         }
