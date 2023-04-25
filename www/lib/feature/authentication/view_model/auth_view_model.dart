@@ -18,13 +18,13 @@ abstract class AuthViewModelBase with Store {
   bool protocol = true; //true=>join, false=>setup
 
   @observable
-  String buttonTitle = t.action.main.join;
+  String buttonTitle = t.action.auth.join;
 
   @observable
-  String pageTitle = t.message.main.join;
+  String pageTitle = t.message.auth.join;
 
   @observable
-  String switchProtocolTitle = t.action.main.change_to_setup;
+  String switchProtocolTitle = t.action.auth.change_to_setup;
 
   String message = t.message.common.unexpected;
 
@@ -37,13 +37,13 @@ abstract class AuthViewModelBase with Store {
   void switchProtocol() {
     protocol = !protocol;
     if (protocol) {
-      buttonTitle = t.action.main.join;
-      pageTitle = t.message.main.join;
-      switchProtocolTitle = t.action.main.change_to_setup;
+      buttonTitle = t.action.auth.join;
+      pageTitle = t.message.auth.join;
+      switchProtocolTitle = t.action.auth.change_to_setup;
     } else {
-      buttonTitle = t.action.main.setup;
-      pageTitle = t.message.main.setup;
-      switchProtocolTitle = t.action.main.change_to_join;
+      buttonTitle = t.action.auth.setup;
+      pageTitle = t.message.auth.setup;
+      switchProtocolTitle = t.action.auth.change_to_join;
     }
   }
 

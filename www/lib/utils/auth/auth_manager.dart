@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 import '../../config/config.dart';
-import '../../feature/transfer/model/transfer_room_model.dart';
+import '../../feature/room/model/room_model.dart';
 import '../cache/cache_manager.dart';
 import '../network/http_method.dart';
 import '../network/network_manager.dart';
@@ -28,7 +28,7 @@ class AuthManager {
 
   final http = NetworkManager.instance;
   final cache = CacheManager.instance;
-  TransferRoomModel? room;
+  RoomModel? room;
 
   AuthManager._init();
 
@@ -45,7 +45,7 @@ class AuthManager {
       if (res.statusCode == 200) {
         await cache.writeString('room_code', code);
         await cache.writeString('room_pwd', password);
-        room = TransferRoomModel(id: res.data['id'], code: res.data['code'], host: res.data['host']);
+        room = RoomModel(id: res.data['id'], code: res.data['code'], host: res.data['host']);
         return AuthResponse(code: AuthResponseCode.success);
       } else {
         AuthResponse response = AuthResponse(code: AuthResponseCode.unknown);
@@ -85,7 +85,7 @@ class AuthManager {
       if (res.statusCode == 200) {
         await cache.writeString('room_code', code);
         await cache.writeString('room_pwd', password);
-        room = TransferRoomModel(id: res.data['id'], code: res.data['code'], host: res.data['host']);
+        room = RoomModel(id: res.data['id'], code: res.data['code'], host: res.data['host']);
         return AuthResponse(code: AuthResponseCode.success);
       } else {
         AuthResponse response = AuthResponse(code: AuthResponseCode.unknown);

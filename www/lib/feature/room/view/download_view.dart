@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-import '../model/transfer_download_file_model.dart';
+import '../model/download_file_model.dart';
 
 class DownloadView extends StatefulWidget {
   const DownloadView(
       {Key? key, required this.model, required this.changeDownloadList, required this.onDownload, required this.path, this.expanded = false})
       : super(key: key);
-  final TFSubDirectory model;
-  final Function(TFile, bool?) changeDownloadList;
+  final FileDirectory model;
+  final Function(FileToDownload, bool?) changeDownloadList;
   final Function(String) onDownload;
   final List<String> path;
   final bool expanded;
@@ -84,8 +84,8 @@ class FileTile extends StatefulWidget {
     required this.onDownload,
     required this.path,
   }) : super(key: key);
-  final TFile model;
-  final Function(TFile, bool?) changeDownloadList;
+  final FileToDownload model;
+  final Function(FileToDownload, bool?) changeDownloadList;
   final Function(String) onDownload;
   final List<String> path;
 

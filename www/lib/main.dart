@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:fson/utils/cache/cache_manager.dart';
 
 import 'gen/translations.g.dart';
 import 'utils/router/app_router.dart';
@@ -9,7 +10,7 @@ import 'utils/router/guards/room_guard.dart';
 Future<void> main() async {
   // await dotenv.load();
   WidgetsFlutterBinding.ensureInitialized(); // add this
-  LocaleSettings.useDeviceLocale();
+  LocaleSettings.setLocaleRaw(await CacheManager.instance.readString('locale') ?? 'en');
   runApp(TranslationProvider(child: App()));
 }
 
@@ -24,6 +25,7 @@ class App extends StatelessWidget {
       locale: TranslationProvider.of(context).flutterLocale, // use provider
       supportedLocales: AppLocaleUtils.supportedLocales,
       localizationsDelegates: GlobalMaterialLocalizations.delegates,
+
       routerDelegate: _appRouter.delegate(),
       routeInformationParser: _appRouter.defaultRouteParser(),
     );

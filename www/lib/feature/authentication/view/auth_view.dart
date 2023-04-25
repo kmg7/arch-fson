@@ -49,9 +49,9 @@ class _AuthViewState extends State<AuthView> {
         children: [
           Text(_viewModel.pageTitle),
           const Divider(),
-          roomId(idController, t.title.main.room_code),
+          roomId(idController, t.title.auth.room_code),
           const Divider(),
-          PasswordField(controller: pwdController, label: t.title.main.password),
+          PasswordField(controller: pwdController, label: t.title.auth.password),
           const Divider(),
           ElevatedButton(
             onPressed: () async {
@@ -61,7 +61,7 @@ class _AuthViewState extends State<AuthView> {
                 _viewModel.changeLoading();
                 if (context.mounted) {
                   response
-                      ? context.router.replace(const TransferRoute())
+                      ? context.router.replace(const RoomRoute())
                       : showDialog(
                           context: context,
                           builder: (BuildContext context) {
@@ -96,16 +96,16 @@ Widget roomId(TextEditingController controller, String label) => TextFormField(
       ),
       validator: (val) {
         if (val == null) {
-          return t.message.common.cannot_be_null(field: t.title.main.room_code);
+          return t.message.common.cannot_be_null(field: t.title.auth.room_code);
         }
         if (val.length < 4) {
-          return t.message.common.min_character(field: t.title.main.room_code, length: 4);
+          return t.message.common.min_character(field: t.title.auth.room_code, length: 4);
         }
         if (val.length > 16) {
-          return t.message.common.max_character(field: t.title.main.room_code, length: 16);
+          return t.message.common.max_character(field: t.title.auth.room_code, length: 16);
         }
         if (!RegExp(r'^[a-zA-Z0-9]+$').hasMatch(val)) {
-          return t.message.common.must_be_alpha_numeric(field: t.title.main.room_code);
+          return t.message.common.must_be_alpha_numeric(field: t.title.auth.room_code);
         }
         return null;
       },

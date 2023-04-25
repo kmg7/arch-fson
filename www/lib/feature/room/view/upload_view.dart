@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dropzone/flutter_dropzone.dart';
 
-import '../model/transfer_upload_file_model.dart';
+import '../../../gen/translations.g.dart';
+import '../model/upload_file_model.dart';
 
 class UploadView extends StatefulWidget {
   const UploadView({
@@ -41,7 +42,7 @@ class _UploadViewState extends State<UploadView> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const SizedBox.shrink(),
-              const Text('To upload files to host drag and drop or select'),
+              Text(t.message.room.upload),
               SizedBox(
                   width: 60,
                   child: ElevatedButton(
@@ -103,8 +104,9 @@ class _UploadViewState extends State<UploadView> {
   Widget dropzone() => DropzoneView(
         operation: DragOperation.copy,
         onCreated: (ctrl) => controller1 = ctrl,
-        onLoaded: () => print('DropZone loaded'),
-        onError: (ev) => print('DropZone error: $ev'),
+        onError: (ev) => {
+          // if (kDebugMode) {print('DropZone error: $ev')}
+        },
         onHover: () {
           setState(() => dzoneHighlited = true);
         },
@@ -112,7 +114,6 @@ class _UploadViewState extends State<UploadView> {
           setState(() => dzoneHighlited = false);
         },
         onDropMultiple: (ev) async {
-          print('Zone 1 drop multiple: $ev');
           setState(() => dzoneHighlited = false);
           if (ev != null) {
             await extract(ev, widget.changeUploadList);

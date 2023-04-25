@@ -1,8 +1,8 @@
-class TransferRoomModel {
+class RoomModel {
   String id;
   String code;
   String? host;
-  TransferRoomModel({
+  RoomModel({
     required this.id,
     required this.code,
     this.host,

@@ -1,17 +1,17 @@
-class TFile {
+class FileToDownload {
   String name;
   String size;
   String path;
   bool selected = false;
 
-  TFile({
+  FileToDownload({
     required this.name,
     required this.size,
     required this.path,
   });
 
-  factory TFile.fromJson(Map<String, dynamic> json) {
-    return TFile(
+  factory FileToDownload.fromJson(Map<String, dynamic> json) {
+    return FileToDownload(
       name: json['name'] as String,
       size: json['size'] as String,
       path: json['path'] as String,
@@ -19,14 +19,14 @@ class TFile {
   }
 }
 
-class TFSubDirectory {
+class FileDirectory {
   String? name;
-  List<TFile>? files;
-  List<TFSubDirectory>? subdirs;
+  List<FileToDownload>? files;
+  List<FileDirectory>? subdirs;
   bool isMain = false;
   bool selected = false;
 
-  void selectAll(bool val, {Function(TFile, bool)? func}) {
+  void selectAll(bool val, {Function(FileToDownload, bool)? func}) {
     if (files != null) {
       for (var f in files!) {
         if (func != null) {
@@ -49,20 +49,20 @@ class TFSubDirectory {
     selected = val;
   }
 
-  TFSubDirectory({this.name, this.files, this.subdirs});
+  FileDirectory({this.name, this.files, this.subdirs});
 
-  TFSubDirectory.fromJson(Map<String, dynamic> json) {
+  FileDirectory.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     if (json['files'] != null) {
-      files = <TFile>[];
+      files = <FileToDownload>[];
       json['files'].forEach((v) {
-        files!.add(TFile.fromJson(v));
+        files!.add(FileToDownload.fromJson(v));
       });
     }
     if (json['subdirs'] != null) {
-      subdirs = <TFSubDirectory>[];
+      subdirs = <FileDirectory>[];
       json['subdirs'].forEach((v) {
-        subdirs!.add(TFSubDirectory.fromJson(v));
+        subdirs!.add(FileDirectory.fromJson(v));
       });
     }
   }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -8,29 +10,29 @@ import '../../../utils/network/http_method.dart';
 import '../../../utils/network/network_manager.dart';
 import '../../../utils/network/network_request_options.dart';
 import '../../../utils/network/network_response.dart';
-import '../model/transfer_download_file_model.dart';
-import '../model/transfer_room_model.dart';
-import '../model/transfer_upload_file_model.dart';
+import '../model/download_file_model.dart';
+import '../model/room_model.dart';
+import '../model/upload_file_model.dart';
 
-part 'transfer_view_model.g.dart';
+part 'room_view_model.g.dart';
 
-class TransferViewModel = TransferViewModelBase with _$TransferViewModel;
+class RoomViewModel = TransferViewModelBase with _$RoomViewModel;
 
 abstract class TransferViewModelBase with Store {
   @observable
-  TransferRoomModel room;
+  RoomModel room;
 
   @observable
   bool isLoading = false;
 
   @observable
-  List<TFile> filesToDownload = [];
+  List<FileToDownload> filesToDownload = [];
 
   @observable
   List<FileToUpload> filesToUpload = [];
 
   @observable
-  TFSubDirectory? availableFiles;
+  FileDirectory? availableFiles;
 
   @observable
   int downloadFileCount = 0;
@@ -41,9 +43,19 @@ abstract class TransferViewModelBase with Store {
   @observable
   bool mode = true;
 
+  @observable
+  bool hostOnline = false;
+
   TransferViewModelBase({
     required this.room,
-  });
+  }) {
+    pingHost();
+
+    Timer.periodic(const Duration(seconds: 5), (timer) async {
+      await pingHost();
+      print(hostOnline);
+    });
+  }
 
   final http = NetworkManager.instance;
 
@@ -64,7 +76,7 @@ abstract class TransferViewModelBase with Store {
   }
 
   @action
-  void changeDownloadList(TFile file, bool? op) {
+  void changeDownloadList(FileToDownload file, bool? op) {
     if (op != null) {
       if (op) {
         filesToDownload.add(file);
@@ -76,12 +88,18 @@ abstract class TransferViewModelBase with Store {
 
   @action
   Future<void> download(String path) async {
+    if (!hostOnline) {
+      return;
+    }
     final url = Uri.parse('http://${room.host}/transfer?file=$path');
     await launchUrl(url);
   }
 
   @action
   Future<void> downloadSelected() async {
+    if (!hostOnline) {
+      return;
+    }
     for (var element in filesToDownload) {
       await download(element.path);
     }
@@ -91,6 +109,9 @@ abstract class TransferViewModelBase with Store {
   @action
   Future<void> upload() async {
     try {
+      if (!hostOnline) {
+        return;
+      }
       if (filesToUpload.isEmpty) {
         print('No Files Selected');
         return;
@@ -106,9 +127,9 @@ abstract class TransferViewModelBase with Store {
         data: await http.multipartForm(filesToUpload.map((e) => {e.name: e.bytes!}).toList()),
       );
       if (response.statusCode == 200) {
-        print('Files Uploaded Succesfully');
+        // print('Files Uploaded Succesfully');
       } else {
-        print('Something went wrong on uploading files host error');
+        // print('Something went wrong on uploading files host error');
       }
       uploadFileCount = 0;
       filesToUpload.clear();
@@ -156,6 +177,25 @@ abstract class TransferViewModelBase with Store {
     changeLoading();
   }
 
+  @action
+  Future<void> pingHost() async {
+    try {
+      NetworkResponse response;
+      response = await http.request(
+        'http://${room.host}/status',
+        options: NetworkRequestOptions(
+          HttpMethod.get,
+          userAgent: 'Transfer/0.0.1',
+        ),
+      );
+      if (response.statusCode == 200) {
+        hostOnline = true;
+      } else {
+        hostOnline = false;
+      }
+    } catch (e) {}
+  }
+
   Future<void> getFiles(String host) async {
     changeLoading();
     try {
@@ -170,7 +210,7 @@ abstract class TransferViewModelBase with Store {
       // print(response.statusCode);
       // print(response.data);
       if (response.statusCode == 200) {
-        availableFiles = TFSubDirectory.fromJson(response.data);
+        availableFiles = FileDirectory.fromJson(response.data);
         // availableFiles!.isMain = true;
       } else {
         var message = t.message.common.unexpected;

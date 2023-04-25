@@ -27,7 +27,6 @@ class NetworkManager {
     } on DioError catch (e) {
       if (kDebugMode) {
         print(e);
-        print('hit here');
       }
       if (e.response != null) {
         return NetworkResponse(data: e.response!.data, statusCode: e.response!.statusCode);
