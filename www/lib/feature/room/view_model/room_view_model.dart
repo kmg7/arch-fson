@@ -107,16 +107,22 @@ abstract class TransferViewModelBase with Store {
   }
 
   @action
-  Future<void> upload() async {
+  Future<void> uploadAll() async {
+    try {
+      for (var file in filesToUpload) {
+        await upload(file);
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  @action
+  Future<void> upload(FileToUpload file) async {
     try {
       if (!hostOnline) {
         return;
       }
-      if (filesToUpload.isEmpty) {
-        print('No Files Selected');
-        return;
-      }
-      changeLoading();
       NetworkResponse response;
       response = await http.request(
         'http://${room.host}/transfer',
@@ -124,16 +130,13 @@ abstract class TransferViewModelBase with Store {
           HttpMethod.post,
           userAgent: 'Transfer/0.0.1',
         ),
-        data: await http.multipartForm(filesToUpload.map((e) => {e.name: e.bytes!}).toList()),
+        data: await http.multipartForm({file.name: file.bytes!}),
       );
       if (response.statusCode == 200) {
         // print('Files Uploaded Succesfully');
       } else {
         // print('Something went wrong on uploading files host error');
       }
-      uploadFileCount = 0;
-      filesToUpload.clear();
-      changeLoading();
     } catch (e) {
       print(e);
     }

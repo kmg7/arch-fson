@@ -100,7 +100,7 @@ class _RoomViewState extends State<RoomView> {
                                 height: 30,
                                 child: ElevatedButton(
                                   onPressed: () async {
-                                    await _viewModel.upload();
+                                    await _viewModel.uploadAll();
                                   },
                                   style: const ButtonStyle(
                                       padding: MaterialStatePropertyAll(EdgeInsets.zero), backgroundColor: MaterialStatePropertyAll(Colors.green)),
@@ -143,7 +143,11 @@ class _RoomViewState extends State<RoomView> {
                                       ),
                                     )
                                   : const Center(child: Text('Host not provided any file yet'))
-                              : UploadView(changeUploadList: _viewModel.changeUploadList, files: _viewModel.filesToUpload)
+                              : UploadView(
+                                  changeUploadList: _viewModel.changeUploadList,
+                                  upload: _viewModel.upload,
+                                  files: _viewModel.filesToUpload,
+                                )
                           : const Text('Host not online')),
               // const Spacer(),
             ],

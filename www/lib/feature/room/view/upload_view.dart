@@ -9,9 +9,11 @@ class UploadView extends StatefulWidget {
     Key? key,
     required this.changeUploadList,
     required this.files,
+    required this.upload,
   }) : super(key: key);
   final Function(FileToUpload, bool) changeUploadList;
   final List<FileToUpload> files;
+  final Function(FileToUpload) upload;
   @override
   State<UploadView> createState() => _UploadViewState();
 }
@@ -70,6 +72,7 @@ class _UploadViewState extends State<UploadView> {
                     TextButton(
                         onPressed: () {
                           // widget.onDownload(widget.model.path);
+                          widget.upload(e);
                         },
                         child: const Icon(Icons.upload_outlined))
                   ],

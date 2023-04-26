@@ -36,7 +36,7 @@ class NetworkManager {
     }
   }
 
-  Future<FormData> multipartForm(List<Map<String, List<int>>> files) async {
+  Future<FormData> multipartFormMultiFile(List<Map<String, List<int>>> files) async {
     var formData = FormData();
     for (var element in files) {
       for (var file in element.entries) {
@@ -44,6 +44,16 @@ class NetworkManager {
           MapEntry("files", MultipartFile.fromBytes(file.value, filename: file.key)),
         ]);
       }
+    }
+    return formData;
+  }
+
+  Future<FormData> multipartForm(Map<String, List<int>> file) async {
+    var formData = FormData();
+    for (var file in file.entries) {
+      formData.files.addAll([
+        MapEntry("file", MultipartFile.fromBytes(file.value, filename: file.key)),
+      ]);
     }
     return formData;
   }
