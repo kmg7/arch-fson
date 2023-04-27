@@ -1,25 +1,49 @@
+import 'dart:html';
 import 'dart:math';
 
+import 'package:intl/intl.dart';
+
+import 'package:fson/feature/room/model/upload_task_model.dart';
+
 class FileToUpload {
+  dynamic file;
   String name;
   int size;
-  List<int>? bytes;
+  UploadTask? task;
+  UploadStatus status = UploadStatus.notStarted;
+  double uploaded = 0;
 
   FileToUpload({
+    required this.file,
     required this.name,
     required this.size,
-    required this.bytes,
+    this.task,
   });
 
   String get readableSize => readableFileSize(size);
+  int get totalChunks => (size / _chunkSize).ceil() - 1;
+  int get _chunkSize => 1024 * 1024 * 1;
+
+  Stream<List<int>> getChunkStream(int number) async* {
+    final int start = _chunkSize * number;
+    final int end = min(start + _chunkSize, size);
+    final reader = FileReader();
+    final blob = file.slice(start, end);
+
+    reader.readAsArrayBuffer(blob);
+    await reader.onLoad.first;
+    yield reader.result as List<int>;
+  }
+
+  String readableFileSize(int byte) {
+    final units = ["B", "KB", "MB", "GB", "TB"];
+    if (byte <= 0) return "0 B";
+
+    int digitGroups = (log(byte) / log(1024)).floor();
+    if (digitGroups >= units.length) digitGroups = units.length - 1;
+
+    return "${NumberFormat("#,##0.#").format(byte / pow(1024, digitGroups))} ${units[digitGroups]}";
+  }
 }
 
-String readableFileSize(int byte) {
-  final units = ["B", "kB", "MB", "GB", "TB"];
-  if (byte <= 0) return "0";
-
-  int digitGroups = (log(byte) / log(1024)).round();
-  String size = (byte / pow(1024, digitGroups)).toString().substring(0, (byte / pow(1024, digitGroups)).toString().indexOf(".") + 3);
-
-  return "$size ${units[digitGroups]}";
-}
+enum UploadStatus { notStarted, started, paused, cancelled, finished }

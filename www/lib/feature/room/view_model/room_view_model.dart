@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
@@ -6,6 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../../config/config.dart';
 import '../../../gen/translations.g.dart';
+import '../../../utils/network/http_content_type.dart';
 import '../../../utils/network/http_method.dart';
 import '../../../utils/network/network_manager.dart';
 import '../../../utils/network/network_request_options.dart';
@@ -13,6 +15,7 @@ import '../../../utils/network/network_response.dart';
 import '../model/download_file_model.dart';
 import '../model/room_model.dart';
 import '../model/upload_file_model.dart';
+import '../model/upload_task_model.dart';
 
 part 'room_view_model.g.dart';
 
@@ -53,7 +56,7 @@ abstract class TransferViewModelBase with Store {
 
     Timer.periodic(const Duration(seconds: 5), (timer) async {
       await pingHost();
-      print(hostOnline);
+      // print(hostOnline);
     });
   }
 
@@ -123,19 +126,49 @@ abstract class TransferViewModelBase with Store {
       if (!hostOnline) {
         return;
       }
-      NetworkResponse response;
-      response = await http.request(
-        'http://${room.host}/transfer',
-        options: NetworkRequestOptions(
-          HttpMethod.post,
-          userAgent: 'Transfer/0.0.1',
-        ),
-        data: await http.multipartForm({file.name: file.bytes!}),
+      //register task
+      NetworkResponse taskResponse;
+      taskResponse = await http.request(
+        'http://${room.host}/task',
+        options: NetworkRequestOptions(HttpMethod.post, userAgent: 'Transfer/0.0.1', contentType: HttpContentType.json),
+        data: jsonEncode({"name": file.name, "size": file.size, "totalChunk": file.totalChunks}),
       );
-      if (response.statusCode == 200) {
-        // print('Files Uploaded Succesfully');
+      print(taskResponse.statusCode);
+      print(taskResponse.data);
+
+      if (taskResponse.statusCode == 201) {
+        file.task = UploadTask.fromJson(taskResponse.data);
       } else {
-        // print('Something went wrong on uploading files host error');
+        // print(taskResponse.data);
+        // print(taskResponse.statusCode);
+        return;
+      }
+      bool isCompleted = false;
+      bool errorHappened = false;
+      int currentChunk = 0;
+
+      while (!isCompleted && !errorHappened && currentChunk <= file.task!.totalChunk!) {
+        file.uploaded = ((100 / file.totalChunks + 1) * file.task!.lastChunk!);
+        // print((100 / file.totalChunks) * file.task!.lastChunk!);
+        // print('$currentChunk/${file.task!.totalChunk! + 1} %${(100 / file.totalChunks + 1) * file.task!.lastChunk!}');
+        NetworkResponse response;
+        String address = 'http://${room.host}/transfer/${file.task!.id!}?chunk=$currentChunk';
+        response = await http.request(
+          address,
+          options: NetworkRequestOptions(
+            HttpMethod.post,
+            userAgent: 'Transfer/0.0.1',
+          ),
+          data: http.multipartFormFromStream(file.getChunkStream(currentChunk), file.size),
+        );
+        // print(response.statusCode);
+        if (currentChunk == file.task!.totalChunk) {
+          isCompleted = true;
+          print('Files Uploaded Succesfully');
+          return;
+        }
+        file.task!.lastChunk = currentChunk;
+        currentChunk++;
       }
     } catch (e) {
       print(e);

@@ -68,13 +68,16 @@ class _UploadViewState extends State<UploadView> {
                     ),
                     Text(e.name),
                     const Spacer(),
+                    Text(e.status.name),
                     Text(e.readableSize),
-                    TextButton(
-                        onPressed: () {
-                          // widget.onDownload(widget.model.path);
-                          widget.upload(e);
-                        },
-                        child: const Icon(Icons.upload_outlined))
+                    e.uploaded == 0
+                        ? TextButton(
+                            onPressed: () {
+                              // widget.onDownload(widget.model.path);
+                              widget.upload(e);
+                            },
+                            child: const Icon(Icons.upload_outlined))
+                        : CircularProgressIndicator(value: e.uploaded)
                   ],
                 ),
               )
@@ -90,13 +93,8 @@ class _UploadViewState extends State<UploadView> {
         final name = await controller1.getFilename(file);
         // final bytes = await controller1.getFileData(file);
         final size = await controller1.getFileSize(file);
-        List<int> data = [];
-        controller1.getFileStream(file).listen((bytes) {
-          for (int byte in bytes) {
-            data.add(byte);
-          }
-        });
-        filesToUpload(FileToUpload(name: name, size: size, bytes: data), true);
+
+        filesToUpload(FileToUpload(name: name, size: size, file: file), true);
       }
     } catch (e) {
       print(e);

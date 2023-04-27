@@ -36,25 +36,11 @@ class NetworkManager {
     }
   }
 
-  Future<FormData> multipartFormMultiFile(List<Map<String, List<int>>> files) async {
+  FormData multipartFormFromStream(Stream<List<int>> stream, int length) {
     var formData = FormData();
-    for (var element in files) {
-      for (var file in element.entries) {
-        formData.files.addAll([
-          MapEntry("files", MultipartFile.fromBytes(file.value, filename: file.key)),
-        ]);
-      }
-    }
-    return formData;
-  }
-
-  Future<FormData> multipartForm(Map<String, List<int>> file) async {
-    var formData = FormData();
-    for (var file in file.entries) {
-      formData.files.addAll([
-        MapEntry("file", MultipartFile.fromBytes(file.value, filename: file.key)),
-      ]);
-    }
+    formData.files.addAll([
+      MapEntry("file", MultipartFile(stream, length)),
+    ]);
     return formData;
   }
 }
