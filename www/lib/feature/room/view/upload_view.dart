@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dropzone/flutter_dropzone.dart';
+import 'package:fson/feature/room/view/upload_file_view.dart';
 
 import '../../../gen/translations.g.dart';
 import '../model/upload_file_model.dart';
@@ -13,7 +14,7 @@ class UploadView extends StatefulWidget {
   }) : super(key: key);
   final Function(FileToUpload, bool) changeUploadList;
   final List<FileToUpload> files;
-  final Function(FileToUpload) upload;
+  final Function(FileToUpload, Function(double)) upload;
   @override
   State<UploadView> createState() => _UploadViewState();
 }
@@ -55,32 +56,24 @@ class _UploadViewState extends State<UploadView> {
                       child: const Icon(Icons.drive_folder_upload_outlined)))
             ],
           ),
-          ...widget.files
-              .map(
-                (e) => Row(
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        widget.changeUploadList(e, false);
-                        setState(() {});
-                      },
-                      child: const Icon(Icons.close_outlined),
-                    ),
-                    Text(e.name),
-                    const Spacer(),
-                    Text(e.status.name),
-                    Text(e.readableSize),
-                    e.uploaded == 0
-                        ? TextButton(
-                            onPressed: () {
-                              // widget.onDownload(widget.model.path);
-                              widget.upload(e);
-                            },
-                            child: const Icon(Icons.upload_outlined))
-                        : CircularProgressIndicator(value: e.uploaded)
-                  ],
-                ),
+          Row(
+            children: [
+              Text(t.title.room.file_name),
+              const Spacer(),
+              Text(t.title.room.file_size),
+              const SizedBox(
+                width: 68,
               )
+            ],
+          ),
+          const Divider(color: Colors.grey),
+          ...widget.files
+              .map((e) => UploadFileTile(
+                    changeUploadList: widget.changeUploadList,
+                    file: e,
+                    upload: widget.upload,
+                    parentSetState: () => setState(() {}),
+                  ))
               .toList(),
         ],
       ),
@@ -91,9 +84,7 @@ class _UploadViewState extends State<UploadView> {
     try {
       for (var file in files) {
         final name = await controller1.getFilename(file);
-        // final bytes = await controller1.getFileData(file);
         final size = await controller1.getFileSize(file);
-
         filesToUpload(FileToUpload(name: name, size: size, file: file), true);
       }
     } catch (e) {

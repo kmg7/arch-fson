@@ -94,19 +94,6 @@ class _RoomViewState extends State<RoomView> {
                                   child: const Icon(Icons.downloading_rounded),
                                 ),
                               ),
-                            if (!_viewModel.mode)
-                              SizedBox(
-                                width: 30,
-                                height: 30,
-                                child: ElevatedButton(
-                                  onPressed: () async {
-                                    await _viewModel.uploadAll();
-                                  },
-                                  style: const ButtonStyle(
-                                      padding: MaterialStatePropertyAll(EdgeInsets.zero), backgroundColor: MaterialStatePropertyAll(Colors.green)),
-                                  child: const Icon(Icons.cloud_upload_outlined),
-                                ),
-                              ),
                             Padding(
                               padding: const EdgeInsets.only(left: 8, right: 8),
                               child: SizedBox(
@@ -142,13 +129,13 @@ class _RoomViewState extends State<RoomView> {
                                         expanded: true,
                                       ),
                                     )
-                                  : const Center(child: Text('Host not provided any file yet'))
+                                  : Center(child: Text(t.message.room.host_not_provided_any_file))
                               : UploadView(
                                   changeUploadList: _viewModel.changeUploadList,
                                   upload: _viewModel.upload,
                                   files: _viewModel.filesToUpload,
                                 )
-                          : const Text('Host not online')),
+                          : Text(t.message.room.host_not_online)),
               // const Spacer(),
             ],
           ),

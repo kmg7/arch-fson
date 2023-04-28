@@ -56,7 +56,6 @@ abstract class TransferViewModelBase with Store {
 
     Timer.periodic(const Duration(seconds: 5), (timer) async {
       await pingHost();
-      // print(hostOnline);
     });
   }
 
@@ -110,47 +109,28 @@ abstract class TransferViewModelBase with Store {
   }
 
   @action
-  Future<void> uploadAll() async {
-    try {
-      for (var file in filesToUpload) {
-        await upload(file);
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  @action
-  Future<void> upload(FileToUpload file) async {
+  Future<void> upload(FileToUpload file, Function(double) uploaded) async {
     try {
       if (!hostOnline) {
         return;
       }
-      //register task
       NetworkResponse taskResponse;
       taskResponse = await http.request(
         'http://${room.host}/task',
         options: NetworkRequestOptions(HttpMethod.post, userAgent: 'Transfer/0.0.1', contentType: HttpContentType.json),
         data: jsonEncode({"name": file.name, "size": file.size, "totalChunk": file.totalChunks}),
       );
-      print(taskResponse.statusCode);
-      print(taskResponse.data);
-
       if (taskResponse.statusCode == 201) {
         file.task = UploadTask.fromJson(taskResponse.data);
       } else {
-        // print(taskResponse.data);
-        // print(taskResponse.statusCode);
         return;
       }
       bool isCompleted = false;
       bool errorHappened = false;
       int currentChunk = 0;
-
-      while (!isCompleted && !errorHappened && currentChunk <= file.task!.totalChunk!) {
-        file.uploaded = ((100 / file.totalChunks + 1) * file.task!.lastChunk!);
-        // print((100 / file.totalChunks) * file.task!.lastChunk!);
-        // print('$currentChunk/${file.task!.totalChunk! + 1} %${(100 / file.totalChunks + 1) * file.task!.lastChunk!}');
+      int totalChunk = file.task!.totalChunk!;
+      while (!isCompleted && !errorHappened && currentChunk <= totalChunk) {
+        uploaded(((currentChunk + 1) / (totalChunk)));
         NetworkResponse response;
         String address = 'http://${room.host}/transfer/${file.task!.id!}?chunk=$currentChunk';
         response = await http.request(
@@ -161,10 +141,8 @@ abstract class TransferViewModelBase with Store {
           ),
           data: http.multipartFormFromStream(file.getChunkStream(currentChunk), file.size),
         );
-        // print(response.statusCode);
-        if (currentChunk == file.task!.totalChunk) {
+        if (currentChunk == file.task!.totalChunk! - 1) {
           isCompleted = true;
-          print('Files Uploaded Succesfully');
           return;
         }
         file.task!.lastChunk = currentChunk;
@@ -243,11 +221,8 @@ abstract class TransferViewModelBase with Store {
           userAgent: 'Transfer/0.0.1',
         ),
       );
-      // print(response.statusCode);
-      // print(response.data);
       if (response.statusCode == 200) {
         availableFiles = FileDirectory.fromJson(response.data);
-        // availableFiles!.isMain = true;
       } else {
         var message = t.message.common.unexpected;
         if (response.data != null) {

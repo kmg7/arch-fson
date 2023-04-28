@@ -20,8 +20,18 @@ class FileToUpload {
     this.task,
   });
 
+  String get fixedName {
+    if (name.length > 20) {
+      return '${name.substring(0, 17)}...';
+    } else {
+      return name;
+    }
+  }
+
+  bool get isLarge => _chunkSize * 2 < _chunkSize;
+
   String get readableSize => readableFileSize(size);
-  int get totalChunks => (size / _chunkSize).ceil() - 1;
+  int get totalChunks => (size / _chunkSize).ceil();
   int get _chunkSize => 1024 * 1024 * 1;
 
   Stream<List<int>> getChunkStream(int number) async* {
