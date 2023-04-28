@@ -35,7 +35,8 @@ class FileToUpload {
   int get _chunkSize => 1024 * 1024 * 1;
 
   Stream<List<int>> getChunkStream(int number) async* {
-    final int start = _chunkSize * (number - 1);
+    number--;
+    final int start = _chunkSize * (number);
     final int end = min(start + _chunkSize, size);
     final reader = FileReader();
     final blob = file.slice(start, end);

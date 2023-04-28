@@ -129,7 +129,7 @@ abstract class TransferViewModelBase with Store {
       bool errorHappened = false;
       int currentChunk = 1;
 
-      while (!isCompleted && !errorHappened && currentChunk <= file.task!.totalChunk!) {
+      while (!isCompleted && !errorHappened && (currentChunk <= file.task!.totalChunk!)) {
         uploaded(((currentChunk) / (file.task!.totalChunk!)));
         NetworkResponse response;
         String address = 'http://${room.host}/transfer/${file.task!.id!}?chunk=$currentChunk';
@@ -142,11 +142,6 @@ abstract class TransferViewModelBase with Store {
           data: http.multipartFormFromStream(file.getChunkStream(currentChunk), file.size),
         );
         // print('currentChunk:$currentChunk | ${file.task!.totalChunk!} response:${response.statusCode}');
-
-        if (currentChunk == file.task!.totalChunk!) {
-          isCompleted = true;
-          return;
-        }
         file.task!.lastChunk = currentChunk;
         currentChunk++;
       }
