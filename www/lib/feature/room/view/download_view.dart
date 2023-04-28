@@ -108,7 +108,7 @@ class _FileTileState extends State<FileTile> {
               }
             }),
         const Icon(Icons.file_present_outlined),
-        Text(widget.model.name),
+        Text(widget.model.fixedName),
         const Spacer(),
         Text(widget.model.size),
         TextButton(

@@ -10,6 +10,14 @@ class FileToDownload {
     required this.path,
   });
 
+  String get fixedName {
+    if (name.length > 20) {
+      return '${name.substring(0, 17)}...';
+    } else {
+      return name;
+    }
+  }
+
   factory FileToDownload.fromJson(Map<String, dynamic> json) {
     return FileToDownload(
       name: json['name'] as String,
