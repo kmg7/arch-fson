@@ -52,6 +52,16 @@
         "auth": {
             "roomCode": "Room Code",
             "password": "Password"
+        },
+        "room": {
+            "fileName": "File Name",
+            "fileSize": "Size"
+        }
+    },
+    "pages": {
+        "main": {
+            "about": "'FSON' enables devices on the same network to transfer files using the HTTP protocol. The open source project allows for file transfers between host computers and receiving devices through a UNIX/Windows operating system installed on the host machine. Users can join an existing room or create a new one through the project's website, and then connect to the host computer using a desktop application. Once logged in, both mobile and desktop hosts in the room can engage in two-way file transfers with the host computer. The main objective of the project is to enable fast file transfers using the HTTP protocol through a web application provided by the host computer on the same private network. The project also aims to provide experience in continuous development and integration processes for cross-platform technologies used in the project.",
+            "projectPage": "Any contributions are welcome. You can access project files from here."
         }
     }
 }

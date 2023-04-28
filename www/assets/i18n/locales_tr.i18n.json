@@ -52,6 +52,16 @@
         "auth": {
             "roomCode": "Oda Kodu",
             "password": "Şifre"
+        },
+        "room": {
+            "fileName": "Dosya Adı",
+            "fileSize": "Boyutu"
+        }
+    },
+    "pages": {
+        "main": {
+            "about": "'FSON' aynı ağ üzerindeki cihazların yerel ağ üzerinden HTTP protokolü kullanarak dosya aktarımı yapmasını sağlayan bir açık kaynak projesi. Bu proje, UNIX/Windows işletim sistemi yüklü bir ev sahibi makine üzerinden alıcı cihazlar ve ev sahibi arasında dosya aktarımını mümkün kılıyor. Kullanıcılar, projenin web sitesi araçlığıyla var olan bir odaya katılabilir ya da yeni bir oda oluşturabilirler. Oluşturulan odaya bir host bilgisayar masaüstü yazılımı ile bağlanır ve ilgili kayıtlar yapıldıktan sonra odaya katılan mobil ve masaüstü konaklar host bilgisayar ile 2 yönlü dosya aktarımı yaparlar. Projenin temel amacı, aynı özel ağda bulunan cihazların host bilgisayarda sunulan web uygulaması ile HTTP protokolü vasıtasıyla hızlı dosya aktarımını mümkün kılmaktır. Bu proje, çeşitli teknolojilerin beraber kullanıldığı bir proje olduğundan platformlar arası çeşitli teknolojilerin beraber kullanıldığı bir projede sürekli geliştirme ve entegrasyon süreçleri hakkında tecrübe edinilmesi hedefleniyor.",
+            "projectPage": "Proje sayfasına buradan ulaşabilirsiniz her türlü yardımı hoş karşılarım."
         }
     }
 }
