@@ -78513,7 +78513,7 @@ Uo(a){var $async$pS=A.M(function(b,c){switch(b){case 2:n=q
 s=n.pop()
 break
 case 1:o=c
-s=p}while(true)switch(s){case 0:k=1048576*a
+s=p}while(true)switch(s){case 0:k=1048576*(a-1)
 j=Math.min(k+1048576,m.c)
 i=new FileReader()
 i.readAsArrayBuffer(J.aHP(m.a,k,j))
@@ -78932,81 +78932,88 @@ return A.W(p.kH(0),$async$mR)
 case 7:case 1:return A.O(q,r)}})
 return A.P($async$mR,r)},
 kQ(a,b,c){return this.ak6(0,b,c)},
-ak6(b1,b2,b3){var s=0,r=A.Q(t.H),q,p=2,o,n=this,m,l,k,j,i,h,g,f,e,d,c,b,a,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,b0
-var $async$kQ=A.M(function(b4,b5){if(b4===1){o=b5
+ak6(b0,b1,b2){var s=0,r=A.Q(t.H),q,p=2,o,n=this,m,l,k,j,i,h,g,f,e,d,c,b,a,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9
+var $async$kQ=A.M(function(b3,b4){if(b3===1){o=b4
 s=p}while(true)switch(s){case 0:p=4
-e=n.gl_()
-e.a.b2(e)
+f=n.gl_()
+f.a.b2(f)
 if(!n.x){s=1
 break}m=null
-e=n.y
-d=n.gip()
-d.a.b2(d)
-d=n.a.c
-c=A.yN("POST","application/json",null,"Transfer/0.0.1")
-b=b2.c
-a=t.N
+f=n.y
+e=n.gip()
+e.a.b2(e)
+e=n.a.c
+d=A.yN("POST","application/json",null,"Transfer/0.0.1")
+c=b1.c
+b=t.N
 s=7
-return A.W(e.pD(0,"http://"+A.h(d)+"/task",B.aS.F0(A.aE(["name",b2.b,"size",b,"totalChunk",B.d.dR(b/1048576)],a,t.K),null),c),$async$kQ)
-case 7:m=b5
-if(m.b===201){d=m.a
-c=new A.ajE()
-a0=J.aw(d)
-c.a=a0.h(d,"id")
-a1=a0.h(d,"totalChunk")
-c.b=a1
-c.c=a0.h(d,"lastChunk")
-b2.d=c}else{s=1
+return A.W(f.pD(0,"http://"+A.h(e)+"/task",B.aS.F0(A.aE(["name",b1.b,"size",c,"totalChunk",B.d.dR(c/1048576)],b,t.K),null),d),$async$kQ)
+case 7:m=b4
+if(m.b===201){e=m.a
+d=new A.ajE()
+a=J.aw(e)
+d.a=a.h(e,"id")
+d.b=a.h(e,"totalChunk")
+d.c=a.h(e,"lastChunk")
+b1.d=d}else{s=1
 break}l=!1
 k=!1
-j=0
-a1.toString
-i=a1
-d=t.YB
-c=t.cS
+j=1
+e=t.YB
+a=t.cS
 a0=t.yp
 a1=t.Iq
 a2=t.G5
 case 8:if(!!0){s=9
-break}if(!(!l&&!k&&j<=i)){s=9
-break}b3.$1((j+1)/i)
-h=null
-a3=n.gip()
-a3.a.b2(a3)
-a3=n.a.c
-a4=b2.d.a
+break}if(!l)if(!k){a3=j
+a4=d.b
 a4.toString
-g="http://"+A.h(a3)+"/transfer/"+a4+"?chunk="+A.h(j)
-a4=new A.NH("POST",null)
-a4.r="Transfer/0.0.1"
-a4.f="close"
-a3=b2.pS(j)
-a5=A.cd("\\r\\n|\\r|\\n",!0)
-a6=A.a([],a1)
-a7=A.a([],c)
-a8=new A.xr(a5,a6,a7)
-a8.a="--dio-boundary-"+B.c.lP(B.h.k(B.GP.ahm(4294967296)),10,"0")
-a5=A.a_t(null,a0)
-a6=new A.rM("application".toLowerCase(),"octet-stream".toLowerCase(),new A.jL(A.w(a,a),a2))
-B.b.R(a7,A.a([new A.ax("file",new A.ou(b,a5,a6,a3),d)],c))
+a4=a3<=a4
+a3=a4}else a3=!1
+else a3=!1
+if(!a3){s=9
+break}a3=j
+d=d.b
+d.toString
+b2.$1(a3/d)
+i=null
+d=n.gip()
+d.a.b2(d)
+d=n.a.c
+a3=b1.d.a
+a3.toString
+h="http://"+A.h(d)+"/transfer/"+a3+"?chunk="+A.h(j)
+a3=new A.NH("POST",null)
+a3.r="Transfer/0.0.1"
+a3.f="close"
+d=b1.pS(j)
+a4=A.cd("\\r\\n|\\r|\\n",!0)
+a5=A.a([],a1)
+a6=A.a([],a)
+a7=new A.xr(a4,a5,a6)
+a7.a="--dio-boundary-"+B.c.lP(B.h.k(B.GP.ahm(4294967296)),10,"0")
+a4=A.a_t(null,a0)
+a5=new A.rM("application".toLowerCase(),"octet-stream".toLowerCase(),new A.jL(A.w(b,b),a2))
+B.b.R(a6,A.a([new A.ax("file",new A.ou(c,a4,a5,d),e)],a))
 s=10
-return A.W(e.pD(0,g,a8,a4),$async$kQ)
-case 10:h=b5
-a3=j
-a4=b2.d.b
-a4.toString
-if(J.e(a3,a4-1)){l=!0
+return A.W(f.pD(0,h,a7,a3),$async$kQ)
+case 10:i=b4
+d=j
+a3=b1.d.b
+a3.toString
+if(J.e(d,a3)){l=!0
 s=1
-break}b2.d.c=j;++j
+break}d=b1.d
+d.c=j;++j
 s=8
 break
 case 9:p=2
 s=6
 break
 case 4:p=3
-b0=o
-f=A.aj(b0)
-A.vo(f)
+a9=o
+g=A.aj(a9)
+A.vo(g)
 s=6
 break
 case 3:s=2
